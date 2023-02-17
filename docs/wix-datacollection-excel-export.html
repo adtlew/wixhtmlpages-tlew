@@ -1,73 +1,77 @@
 <html>
-<head>
-<script>
-    var myList=[];
-    window.onmessage = function(event){
-    if (event.data) {
-      myList = event.data;
-      if (myList.length>0) {
-        buildHtmlTable();
-      }
-    }
-    else {
-      myList = [];
-    }
-  };
- function buildHtmlTable() {
-     var columns = addAllColumnHeaders(myList);
- 
-     for (var i = 0 ; i < myList.length ; i++) {
-         var row$ = $('<tr/>');
-         for (var colIndex = 0 ; colIndex < columns.length ; colIndex++) {
-             var cellValue = myList[i][columns[colIndex]];
- 
-             if (cellValue == null) { cellValue = ""; }
- 
-             row$.append($('<td/>').html(cellValue));
-         }
-         $("#excelDataTable").append(row$);
-         
-     }
-     return exportF(); // Make Excel file download now
- }
- function addAllColumnHeaders(myList)
- {
-     var columnSet = [];
-     var headerTr$ = $('<tr/>');
- 
-     for (var i = 0 ; i < myList.length ; i++) {
-         var rowHash = myList[i];
-         for (var key in rowHash) {
-             if ($.inArray(key, columnSet) == -1){
-                 columnSet.push(key);
-                 headerTr$.append($('<th/>').html(key));
-             }
-         }
-     }
-     $("#excelDataTable").append(headerTr$);
- 
-     return columnSet;
- }
- function exportF() {
-  var table = document.getElementById("excelDataTable");
-  var html = table.outerHTML;
 
-  var url = 'data:application/vnd.ms-excel,' + escape(html);
-  var link = document.getElementById("downloadLink");
-  link.setAttribute("href", url);
-  link.setAttribute("download", "export.xls"); // Choose the file name here
-  link.click(); // Download your excel file 
-  table.innerHTML = '';
-  return false;
-}
- </script>
+<head>
+  <script>
+    var myList = [];
+    window.onmessage = function (event) {
+      if (event.data) {
+        myList = event.data;
+        if (myList.length > 0) {
+          buildHtmlTable();
+        }
+      }
+      else {
+        myList = [];
+      }
+    };
+    
+    function buildHtmlTable() {
+      var columns = addAllColumnHeaders(myList);
+
+      for (var i = 0; i < myList.length; i++) {
+        var row$ = $('<tr/>');
+        for (var colIndex = 0; colIndex < columns.length; colIndex++) {
+          var cellValue = myList[i][columns[colIndex]];
+
+          if (cellValue == null) { cellValue = ""; }
+
+          row$.append($('<td/>').html(cellValue));
+        }
+        $("#excelDataTable").append(row$);
+
+      }
+      return exportF(); // Make Excel file download now
+    }
+    
+    function addAllColumnHeaders(myList) {
+      var columnSet = [];
+      var headerTr$ = $('<tr/>');
+
+      for (var i = 0; i < myList.length; i++) {
+        var rowHash = myList[i];
+        for (var key in rowHash) {
+          if ($.inArray(key, columnSet) == -1) {
+            columnSet.push(key);
+            headerTr$.append($('<th/>').html(key));
+          }
+        }
+      }
+      $("#excelDataTable").append(headerTr$);
+
+      return columnSet;
+    }
+
+    function exportF() {
+      var table = document.getElementById("excelDataTable");
+      var html = table.outerHTML;
+
+      var url = 'data:application/vnd.ms-excel,' + escape(html);
+      var link = document.getElementById("downloadLink");
+      link.setAttribute("href", url);
+      link.setAttribute("download", "export.xls"); // Choose the file name here
+      link.click(); // Download your excel file 
+      table.innerHTML = '';
+      return false;
+    }
+
+  </script>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <body onLoad="">
-    <table id="excelDataTable" border="1">
-     </table>
-     <a style="display: none" id="downloadLink"></a>
+  <table id="excelDataTable" border="1">
+  </table>
+  <a style="display: none" id="downloadLink"></a>
 </body>
 
 </html>
